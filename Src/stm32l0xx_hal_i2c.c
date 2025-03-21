@@ -608,7 +608,7 @@ HAL_StatusTypeDef HAL_I2C_Init(I2C_HandleTypeDef *hi2c)
   /* Configure I2Cx: Addressing Master mode */
   if (hi2c->Init.AddressingMode == I2C_ADDRESSINGMODE_10BIT)
   {
-    SET_BIT(hi2c->Instance->CR2, I2C_CR2_ADD10);;
+    SET_BIT(hi2c->Instance->CR2, I2C_CR2_ADD10);
   }
   else
   {
@@ -2034,8 +2034,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint16_t 
         hi2c->hdmatx->XferAbortCallback = NULL;
 
         /* Enable the DMA channel */
-        dmaxferstatus = HAL_DMA_Start_IT(hi2c->hdmatx, (uint32_t)hi2c->pBuffPtr, (uint32_t)&hi2c->Instance->TXDR,
-                                         hi2c->XferSize);
+        dmaxferstatus = HAL_DMA_Start_IT(hi2c->hdmatx, (uint32_t)hi2c->pBuffPtr,
+                                         (uint32_t)&hi2c->Instance->TXDR, hi2c->XferSize);
       }
       else
       {
@@ -2056,7 +2056,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint16_t 
       {
         /* Send Slave Address */
         /* Set NBYTES to write and reload if hi2c->XferCount > MAX_NBYTE_SIZE and generate RESTART */
-        I2C_TransferConfig(hi2c, DevAddress, (uint8_t)(hi2c->XferSize + 1U), xfermode, I2C_GENERATE_START_WRITE);
+        I2C_TransferConfig(hi2c, DevAddress, (uint8_t)(hi2c->XferSize + 1U),
+                           xfermode, I2C_GENERATE_START_WRITE);
 
         /* Update XferCount value */
         hi2c->XferCount -= hi2c->XferSize;
@@ -3422,7 +3423,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_IT(I2C_HandleTypeDef *hi2c, uint16
       xfermode = hi2c->XferOptions;
     }
 
-    if ((hi2c->XferSize > 0U) && ((XferOptions == I2C_FIRST_FRAME) || (XferOptions == I2C_FIRST_AND_LAST_FRAME)))
+    if ((hi2c->XferSize > 0U) && ((XferOptions == I2C_FIRST_FRAME) || \
+                                  (XferOptions == I2C_FIRST_AND_LAST_FRAME)))
     {
       /* Preload TX register */
       /* Write data to TXDR */
@@ -3536,7 +3538,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint1
       xfermode = hi2c->XferOptions;
     }
 
-    if ((hi2c->XferSize > 0U) && ((XferOptions == I2C_FIRST_FRAME) || (XferOptions == I2C_FIRST_AND_LAST_FRAME)))
+    if ((hi2c->XferSize > 0U) && ((XferOptions == I2C_FIRST_FRAME) || \
+                                  (XferOptions == I2C_FIRST_AND_LAST_FRAME)))
     {
       /* Preload TX register */
       /* Write data to TXDR */
@@ -3585,8 +3588,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint1
         hi2c->hdmatx->XferAbortCallback = NULL;
 
         /* Enable the DMA channel */
-        dmaxferstatus = HAL_DMA_Start_IT(hi2c->hdmatx, (uint32_t)hi2c->pBuffPtr, (uint32_t)&hi2c->Instance->TXDR,
-                                         hi2c->XferSize);
+        dmaxferstatus = HAL_DMA_Start_IT(hi2c->hdmatx, (uint32_t)hi2c->pBuffPtr,
+                                         (uint32_t)&hi2c->Instance->TXDR, hi2c->XferSize);
       }
       else
       {
@@ -6327,8 +6330,7 @@ static void I2C_ITSlaveCplt(I2C_HandleTypeDef *hi2c, uint32_t ITFlags)
   __HAL_I2C_CLEAR_FLAG(hi2c, I2C_FLAG_STOPF);
 
   /* Disable Interrupts and Store Previous state */
-  if ((tmpstate == HAL_I2C_STATE_BUSY_TX) || (tmpstate == HAL_I2C_STATE_BUSY_TX_LISTEN) ||
-      (tmpstate == HAL_I2C_STATE_LISTEN))
+  if ((tmpstate == HAL_I2C_STATE_BUSY_TX) || (tmpstate == HAL_I2C_STATE_BUSY_TX_LISTEN))
   {
     I2C_Disable_IRQ(hi2c, I2C_XFER_LISTEN_IT | I2C_XFER_TX_IT);
     hi2c->PreviousState = I2C_STATE_SLAVE_BUSY_TX;
@@ -6337,6 +6339,11 @@ static void I2C_ITSlaveCplt(I2C_HandleTypeDef *hi2c, uint32_t ITFlags)
   {
     I2C_Disable_IRQ(hi2c, I2C_XFER_LISTEN_IT | I2C_XFER_RX_IT);
     hi2c->PreviousState = I2C_STATE_SLAVE_BUSY_RX;
+  }
+  else if (tmpstate == HAL_I2C_STATE_LISTEN)
+  {
+    I2C_Disable_IRQ(hi2c, I2C_XFER_LISTEN_IT | I2C_XFER_TX_IT | I2C_XFER_RX_IT);
+    hi2c->PreviousState = I2C_STATE_NONE;
   }
   else
   {

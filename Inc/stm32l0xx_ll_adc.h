@@ -552,7 +552,13 @@ typedef struct
 #endif
 
 /* ADC group regular external trigger TIM21_TRGO available only on            */
-/* STM32L0 devices categories: Cat.2, Cat.3, Cat.5                            */
+/* STM32L0 devices categories: Cat.1                                          */
+#if defined (STM32L011xx) || defined (STM32L021xx) || defined (STM32L010x4)
+#define LL_ADC_REG_TRIG_EXT_TIM21_TRGO     (LL_ADC_REG_TRIG_EXT_TIM22_TRGO)
+#endif
+
+/* LL_ADC_REG_TRIG_EXT_TIM21_TRGO is not applicable to Cat.2, Cat.3 and      */
+/* Cat.5 devices, definition kept for backward compatibility.                */
 #if defined (STM32L031xx) || defined (STM32L041xx) || \
     defined (STM32L051xx) || defined (STM32L052xx) || defined (STM32L053xx) || \
     defined (STM32L062xx) || defined (STM32L063xx) || \

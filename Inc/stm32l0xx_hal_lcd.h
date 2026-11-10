@@ -323,14 +323,14 @@ typedef struct
 #define LCD_DEADTIME_6                  (LCD_FCR_DEAD_2 | LCD_FCR_DEAD_1) /*!< Six Phase between different couple of Frame   */
 #define LCD_DEADTIME_7                  (LCD_FCR_DEAD)                    /*!< Seven Phase between different couple of Frame */
 
-#define IS_LCD_DEAD_TIME(__TIME__) (((__TIME__) == LCD_DEADTIME_0) || \
-                                    ((__TIME__) == LCD_DEADTIME_1) || \
-                                    ((__TIME__) == LCD_DEADTIME_2) || \
-                                    ((__TIME__) == LCD_DEADTIME_3) || \
-                                    ((__TIME__) == LCD_DEADTIME_4) || \
-                                    ((__TIME__) == LCD_DEADTIME_5) || \
-                                    ((__TIME__) == LCD_DEADTIME_6) || \
-                                    ((__TIME__) == LCD_DEADTIME_7))
+#define IS_LCD_DEAD_TIME(__DEADTIME__) (((__DEADTIME__) == LCD_DEADTIME_0) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_1) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_2) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_3) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_4) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_5) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_6) || \
+                                    ((__DEADTIME__) == LCD_DEADTIME_7))
 /**
   * @}
   */
